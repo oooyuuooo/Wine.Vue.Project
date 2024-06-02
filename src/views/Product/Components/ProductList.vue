@@ -1,50 +1,72 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { PriceFormat } from '@/views/Components/WineJS/Wine'
+import { PriceFormat, useSearchParams } from '@/views/Components/WineJS/Wine'
+const { searchParams } = useSearchParams()
 const products = ref([])
+const getUrl = ref('')
 
-const search = ref([
-  {
-    Name: '',
-    Year: '',
-    Category: '',
-    Origin: '',
-    Capacity: '',
-    Taste: ''
+const getUrlParams = () => {
+  getUrl.value = window.location.href
+
+  //從 URL 中提取查詢字串
+  const url = new URL(getUrl.value)
+  const queryParams = new URLSearchParams(url.search)
+
+  //解析和解碼查詢字串
+  searchParams.value = {
+    Name: decodeURIComponent(queryParams.get('Name') || ''),
+    Year: decodeURIComponent(queryParams.get('Year') || ''),
+    Category: decodeURIComponent(queryParams.get('Category') || ''),
+    Origin: decodeURIComponent(queryParams.get('Origin') || ''),
+    Capacity: decodeURIComponent(queryParams.get('Capacity') || ''),
+    Taste: decodeURIComponent(queryParams.get('Taste') || '')
   }
-])
+}
+
 const getProducts = async () => {
-  const searchParams = new URLSearchParams({
-    Name: search.value[0].Name,
-    Year: search.value[0].Year,
-    Category: search.value[0].Category,
-    Origin: search.value[0].Origin,
-    Capacity: search.value[0].Capacity,
-    Taste: search.value[0].Taste
+  getUrlParams()
+  const search = new URLSearchParams({
+    Name: searchParams.value.Name,
+    Year: searchParams.value.Year,
+    Category: searchParams.value.Category,
+    Origin: searchParams.value.Origin,
+    Capacity: searchParams.value.Capacity,
+    Taste: searchParams.value.Taste
   })
   try {
     const res = await fetch(
-      `https://localhost:7200/api/Products/SearchProducts?${searchParams.toString()}`
+      `https://localhost:7200/api/Products/SearchProducts?${search.toString()}`
     )
     const datas = await res.json()
     products.value = datas
-    console.log(datas)
   } catch (error) {
     console.error('Error:', error)
   }
 }
 
 const getProductInfo = (id) => {
-  console.log(id)
   document.location.href = `/WineInfo/${id}`
 }
+
 onMounted(() => {
   getProducts()
 })
 </script>
 <template>
   <div class="product-list row">
-    <template v-for="product in products">
+    <template v-if="products.length === 0">
+      <div class="col-12 text-center" style="margin-top: 100px; color: #000">
+        <h1>商品還未上架</h1>
+        <h2>
+          敬請期待 &nbsp;
+          <i
+            class="fa-solid fa-heart fa-beat"
+            style="color: rgb(145, 31, 39)"
+          ></i>
+        </h2>
+      </div>
+    </template>
+    <template v-else v-for="product in products">
       <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 card-parent">
         <div class="card-container" @click="getProductInfo(product.id)">
           <div class="productImg">

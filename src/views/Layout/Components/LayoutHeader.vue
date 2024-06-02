@@ -1,13 +1,77 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watchEffect } from 'vue'
+import { useSearchParams } from '@/views/Components/WineJS/Wine'
+const { searchParams } = useSearchParams()
 const memberId = ref()
+const testes = ref([])
+const origins = ref([])
+const capacitys = ref([])
+const categorys = ref([])
+const products = ref([])
+
 const logout = () => {
   sessionStorage.removeItem('memberId')
   document.location.href = '/'
 }
+
+const getInfo = async () => {
+  try {
+    const tasterRes = await fetch(
+      'https://localhost:7200/api/Products/GetTaste'
+    )
+    const tasterDatas = await tasterRes.json()
+    const originRes = await fetch(
+      'https://localhost:7200/api/Products/GetOrigin'
+    )
+    const originDatas = await originRes.json()
+    const capacityRes = await fetch(
+      'https://localhost:7200/api/Products/GetCapacity'
+    )
+    const capacityDatas = await capacityRes.json()
+    const categoryRes = await fetch(
+      'https://localhost:7200/api/Products/GetCategory'
+    )
+    const categoryDatas = await categoryRes.json()
+    testes.value = tasterDatas
+    origins.value = originDatas
+    capacitys.value = capacityDatas
+    categorys.value = categoryDatas
+  } catch (error) {
+    console.error('Error:', error)
+  }
+}
+const getProducts = async () => {
+  const search = new URLSearchParams({
+    Category: searchParams.value.Category || '',
+    Origin: searchParams.value.Origin || '',
+    Capacity: searchParams.value.Capacity || '',
+    Taste: searchParams.value.Taste || ''
+  })
+  document.location.href = `/Products/Search?${search.toString()}`
+}
+const search = (type, parmars) => {
+  if (type === 1) {
+    searchParams.value.Category = parmars.toString()
+    getProducts()
+  }
+  if (type === 2) {
+    searchParams.value.Origin = parmars.toString()
+    getProducts()
+  }
+  if (type === 3) {
+    searchParams.value.Taste = parmars.toString()
+    getProducts()
+  }
+  if (type === 4) {
+    searchParams.value.Capacity = parmars.toString()
+    getProducts()
+  }
+}
 onMounted(() => {
   memberId.value = sessionStorage.getItem('memberId')
+  getInfo()
 })
+watchEffect(() => {})
 </script>
 <template>
   <nav class="navbar navbar-expand-lg header sticky-top">
@@ -26,12 +90,85 @@ onMounted(() => {
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              Dropdown link
+              種類
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
+              <template v-for="category in categorys">
+                <li>
+                  <button
+                    class="dropdown-item"
+                    @click="search(1, category.category)"
+                  >
+                    {{ category.category }}
+                  </button>
+                </li>
+              </template>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              產地
+            </a>
+            <ul class="dropdown-menu">
+              <template v-for="origin in origins">
+                <li>
+                  <button
+                    class="dropdown-item"
+                    @click="search(2, origin.origin)"
+                  >
+                    {{ origin.origin }}
+                  </button>
+                </li>
+              </template>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              口感
+            </a>
+            <ul class="dropdown-menu">
+              <template v-for="taste in testes">
+                <li>
+                  <button class="dropdown-item" @click="search(3, taste.taste)">
+                    {{ taste.taste }}
+                  </button>
+                </li>
+              </template>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              容量
+            </a>
+            <ul class="dropdown-menu">
+              <template v-for="capacity in capacitys">
+                <li>
+                  <button
+                    class="dropdown-item"
+                    @click="search(4, capacity.capacity)"
+                  >
+                    {{ capacity.capacity }}
+                  </button>
+                </li>
+              </template>
             </ul>
           </li>
         </ul>
@@ -198,6 +335,23 @@ a:hover {
 .dropdown-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-between;  
+}
+
+.dropdown-item:hover {
+  background-color:  rgb(145, 31, 39);
+  color:white;
+  font-weight: bold;
+  transform: scale(1.05);
+  transition: 0.3s;
+  border-radius: 10px;
+}
+
+.dropdown-menu{
+  box-shadow: 4px 4px 8px 0rem rgba(141, 126, 108, 0.25);
+}
+.nav-item a {
+  font-size: 20px;
+  font-weight: bold;
 }
 </style>

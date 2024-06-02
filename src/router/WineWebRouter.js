@@ -25,6 +25,14 @@ const secondRouter = [
     path: `/Cart`,
     name: 'Cart',
     component: Cart
+  },
+  {
+    path: '/Products/Search',
+    name: 'ProductsSearch',
+    component: ProductView,
+    props: (route) => ({
+      searchParams: route.query
+    })
   }
 ]
 const secondChildrenRouter = secondRouter

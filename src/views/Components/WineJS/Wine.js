@@ -14,3 +14,18 @@ export function formatDate(dateTimeString) {
 
   return formattedDate
 }
+
+import { ref } from 'vue';
+
+export const useSearchParams = () => {
+  const searchParams = ref({
+    Name: '',
+    Year: '',
+    Category: '',
+    Origin: '',
+    Capacity: '',
+    Taste: ''
+  });
+
+  return { searchParams };
+};
