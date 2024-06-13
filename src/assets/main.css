@@ -15,6 +15,10 @@ a,
   padding: 3px;
 }
 
+body{  
+  background-color: #f6dcbf4f;
+}
+
 @media (hover: hover) {
   /* a:hover {
     background-color: hsla(356, 65%, 35%,1);

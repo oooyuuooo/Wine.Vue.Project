@@ -5,11 +5,17 @@ import Login from '@/views/Member/Components/Login.vue'
 import Register from '@/views/Member/Components/Register.vue'
 import MemberInfo from '@/views/Member/Components/MemberInfo.vue'
 import Cart from '@/views/Order/Cart.vue'
+import Index from '@/views/Index.vue'
 const secondRouter = [
   {
-    path: '',
+    path: '/ProductList',
     name: 'Products',
     component: ProductView
+  },
+  {
+    path: '',
+    name: 'Index',
+    component: Index
   },
   {
     path: `/WineInfo/:id`,
@@ -24,6 +30,11 @@ const secondRouter = [
   {
     path: `/Cart`,
     name: 'Cart',
+    component: Cart
+  },
+  {
+    path: '/historyOrder',
+    name: 'historyOrder',
     component: Cart
   },
   {

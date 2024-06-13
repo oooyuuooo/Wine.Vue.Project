@@ -56,61 +56,87 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div class="memberInfo-container">
-    <div class="memberInfo">
-      <div class="left-side">
-        <div class="left-info">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="250"
-            height="250"
-            fill="currentColor"
-            class="bi bi-person-circle"
-            viewBox="0 0 16 16"
-          >
-            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-            <path
-              fill-rule="evenodd"
-              d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
-            />
-          </svg>
-          <h4 style="font-weight: bold; margin-top: 10px">
-            {{ memberInfo.name }}
-          </h4>
-          <h4 style="font-weight: bold">
-            {{ memberInfo.account }}
-          </h4>
-        </div>
-      </div>
-      <div class="right-side">
-        <div class="right-info">
-          <h2 style="font-weight: bold">會員資料</h2>
-          <template v-if="edit">
-            <form>
-              <input type="email" v-model="memberInfo.email" />
-              <input type="text" v-model="memberInfo.phone" />
-              <input
-                type="date"
-                v-model="formattedDate"
-                :placeholder="formattedDatePlaceholder"
+  <div class="mycontainer">
+    <img src="/src/Picture/Wine_welcome.jpg" class="backgroundPic" alt="..." />
+    <div class="memberInfo-container">
+      <div class="memberInfo">
+        <div class="left-side">
+          <div class="left-info">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="250"
+              height="250"
+              fill="currentColor"
+              class="bi bi-person-circle"
+              viewBox="0 0 16 16"
+            >
+              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+              <path
+                fill-rule="evenodd"
+                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
               />
-            </form>
-            <button class="btn edit" @click="save(memberInfo)">確認修改</button>
-          </template>
-          <template v-else>
-            <form>
-              <h4>信箱: {{ memberInfo.email }}</h4>
-              <h4>電話: {{ memberInfo.phone }}</h4>
-              <h4>生日: {{ formatDate(memberInfo.dateOfBirth) }}</h4>
-            </form>
-            <button class="btn edit" @click="edit = !edit">編輯個人資料</button>
-          </template>
+            </svg>
+            <h4 style="font-weight: bold; margin-top: 10px">
+              {{ memberInfo.name }}
+            </h4>
+            <h4 style="font-weight: bold">
+              {{ memberInfo.account }}
+            </h4>
+          </div>
+        </div>
+        <div class="right-side">
+          <div class="right-info">
+            <h2 style="font-weight: bold">會員資料</h2>
+            <template v-if="edit">
+              <form>
+                <input type="email" v-model="memberInfo.email" />
+                <input type="text" v-model="memberInfo.phone" />
+                <input
+                  type="date"
+                  v-model="formattedDate"
+                  :placeholder="formattedDatePlaceholder"
+                />
+              </form>
+              <button class="btn edit" @click="save(memberInfo)">
+                確認修改
+              </button>
+            </template>
+            <template v-else>
+              <form>
+                <h4>信箱: {{ memberInfo.email }}</h4>
+                <h4>電話: {{ memberInfo.phone }}</h4>
+                <h4>生日: {{ formatDate(memberInfo.dateOfBirth) }}</h4>
+              </form>
+              <button class="btn edit" @click="edit = !edit">
+                編輯個人資料
+              </button>
+            </template>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 <style scoped>
+.backgroundPic {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover; /* 背景圖片按比例填充視窗 */
+  background-position: center;
+  opacity: 0.5;
+  z-index: -1; /* 確保背景圖片在所有內容之後 */
+}
+.mycontainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: -20px 0 -100px 0;
+}
 .memberInfo-container {
   display: flex;
   align-items: center;

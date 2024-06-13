@@ -53,6 +53,7 @@ onMounted(() => {
 })
 </script>
 <template>
+  <img src="/src/Picture/Wine_slide.jpg" class="backgroundPic" alt="..." />
   <div class="product-list row">
     <template v-if="products.length === 0">
       <div class="col-12 text-center" style="margin-top: 100px; color: #000">
@@ -95,8 +96,20 @@ onMounted(() => {
   </div>
 </template>
 <style scoped>
+.backgroundPic {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover; /* 背景圖片按比例填充視窗 */
+  background-position: center;
+  opacity: 0.5;
+  z-index: -1; /* 確保背景圖片在所有內容之後 */
+}
 .product-list {
   margin: 30px 20px;
+  z-index: 1; /* 確保內容在背景圖片之上 */
 }
 .productImg {
   display: flex;

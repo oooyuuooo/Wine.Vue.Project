@@ -13,15 +13,25 @@ const getProductInfo = async () => {
     )
     const datas = await res.json()
     productInfo.value = datas
-    console.log(datas)
   } catch (error) {
     console.error('Error:', error)
   }
 }
 
-const addToCart = () => {
+const addToCart = async () => {
   if (memberId.value !== null) {
-    alert(`已加入購物車${count.value}`)
+    const res = await fetch(`https://localhost:7200/api/Orders/AddOrder`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        memberId: memberId.value,
+        productId: productInfo.value.id,
+        count: count.value
+      })
+    })
+    if (res.ok) {
+      alert('成功加入購物車')
+    }
   } else {
     alert('您尚未登入，即將跳轉至登入頁面')
     document.location.href = `/Login`
@@ -33,6 +43,7 @@ onMounted(() => {
 })
 </script>
 <template>
+  <img src="/src/Picture/Wine_Grapes.jpg" class="backgroundPic" alt="..." />
   <div class="container">
     <div class="product-info">
       <div class="card-parent">
@@ -123,6 +134,23 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.backgroundPic {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover; /* 背景圖片按比例填充視窗 */
+  background-position: center;
+  opacity: 0.5;
+  z-index: -1; /* 確保背景圖片在所有內容之後 */
+}
+.container {
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .card-parent {
   margin: 30px 20px;
 }

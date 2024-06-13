@@ -30,41 +30,64 @@ const register = () => {
 }
 </script>
 <template>
-  <div class="login-container">
-    <div class="login">
-      <div class="left-side">
-        <div class="left-info">
-          <h2 style="font-weight: bold">會員登入</h2>
-          <form>
-            <input type="text" placeholder="帳號" v-model="account" />
-            <input type="password" placeholder="密碼" v-model="password" />
-          </form>
-          <button class="btn formbtn" @click="memberlogin(account, password)">
-            確認
-          </button>
-          <p>
-            <a href="/" class="" style="font-size: small">忘記密碼</a>
-            <br />
-            <a href="/" class="" style="font-size: small">回首頁</a>
-          </p>
+  <div class="mycontainer">
+    <img src="/src/Picture/Wine_welcome.jpg" class="backgroundPic" alt="..." />
+    <div class="login-container">
+      <div class="login">
+        <div class="left-side">
+          <div class="left-info">
+            <h2 style="font-weight: bold">會員登入</h2>
+            <form>
+              <input type="text" placeholder="帳號" v-model="account" />
+              <input type="password" placeholder="密碼" v-model="password" />
+            </form>
+            <button class="btn formbtn" @click="memberlogin(account, password)">
+              確認
+            </button>
+            <p>
+              <a href="/" class="" style="font-size: small">忘記密碼</a>
+              <br />
+              <a href="/" class="" style="font-size: small">回首頁</a>
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="right-side">
-        <div class="right-info">
-          <h2 style="font-weight: bold">歡迎來到</h2>
-          <h3 style="font-weight: bold; font-family: Caveat; font-size: 50px">
-            YU's Wine Shop
-          </h3>
-          <span style="font-size: 18px; font-weight: bold">還沒有帳號嗎?</span>
-          <button class="btn btn-outline-light" @click="register()">
-            註冊帳號
-          </button>
+        <div class="right-side">
+          <div class="right-info">
+            <h2 style="font-weight: bold">歡迎來到</h2>
+            <h3 style="font-weight: bold; font-family: Caveat; font-size: 50px">
+              YU's Wine Shop
+            </h3>
+            <span style="font-size: 18px; font-weight: bold"
+              >還沒有帳號嗎?</span
+            >
+            <button class="btn btn-outline-light" @click="register()">
+              註冊帳號
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 <style scoped>
+.backgroundPic {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover; /* 背景圖片按比例填充視窗 */
+  background-position: center;
+  opacity: 0.5;
+  z-index: -1; /* 確保背景圖片在所有內容之後 */
+}
+.mycontainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
 .login-container {
   display: flex;
   align-items: center;
